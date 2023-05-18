@@ -36,6 +36,7 @@ $query = mysqli_query($db, $sql);
 $value = array();
 $bulan = array();
 $tahun = array();
+$nama = array();
 while($data = mysqli_fetch_assoc($query)){
     $explode = explode("-",$data['date']);
     
@@ -44,6 +45,7 @@ while($data = mysqli_fetch_assoc($query)){
         if($i == $explode[1]){
             $value[$i] = $data['jumlah'];
             $bulan [$i] = $dateObj->format('F');
+            $nama [$i] = $data['nama'];
             $tahun [$i] = $explode[0];
             break;
         }
@@ -55,7 +57,7 @@ while($data = mysqli_fetch_assoc($query)){
 $tahunFix = array_values(array_unique($tahun));
 $datajumlah = array_values($value);
 $dataBulan = array_values($bulan);
-
+$dataNama = array_values($nama);
 
 $bulan = array(
     'January',
@@ -76,6 +78,7 @@ echo '<div class="container">';
 
 echo '<table  class="table">';
 echo '<tr><th>Bulan/Tahun</th>';
+echo '<th>Nama</th>';
 
 // Menampilkan nama bulan sebagai judul kolom
 foreach ($bulan as $nama_bulan) {
@@ -84,11 +87,13 @@ foreach ($bulan as $nama_bulan) {
 
 echo '</tr>';
 $i=0;
+$z=0;
 $cek = count($dataBulan);
 // Mengisi nilai acak untuk setiap tahun dan bulan
 foreach ($tahunFix as $tahun_item) {
     echo '<tr><td>'.$tahun_item.'</td>';
-
+    echo '<th>'.$dataNama[$z].'</th>';
+    $z++;
     foreach ($bulan as $nama_bulan) {
 
         if($i<$cek){
